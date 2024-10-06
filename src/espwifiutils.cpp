@@ -69,6 +69,7 @@ std::string toString(wifi_auth_mode_t authMode)
     case WIFI_AUTH_OWE:             return "OWE";
     case WIFI_AUTH_MAX:             return "MAX";
     case WIFI_AUTH_WPA3_ENT_192:    return "WPA3_ENT_192";
+    default:;
     }
     ESP_LOGW(TAG, "Unknown wifi_auth_mode_t(%i)", std::to_underlying(authMode));
     return fmt::format("Unknown wifi_auth_mode_t({})", std::to_underlying(authMode));
@@ -102,6 +103,7 @@ std::string toString(wifi_bandwidth_t bandwidth)
     {
     case WIFI_BW_HT20: return "HT20";
     case WIFI_BW_HT40: return "HT40";
+    default:;
     }
     ESP_LOGW(TAG, "Unknown wifi_bandwidth_t(%i)", std::to_underlying(bandwidth));
     return fmt::format("Unknown wifi_bandwidth_t({})", std::to_underlying(bandwidth));
@@ -195,6 +197,7 @@ const char * toString(wifi_err_reason_t reason)
     case WIFI_REASON_ROAMING:                            return "ROAMING";
     case WIFI_REASON_ASSOC_COMEBACK_TIME_TOO_LONG:       return "ASSOC_COMEBACK_TIME_TOO_LONG";
     case WIFI_REASON_SA_QUERY_TIMEOUT:                   return "SA_QUERY_TIMEOUT";
+    default:;
     }
 
     ESP_LOGE(TAG, "unknown reason %" PRIu8, reason);
@@ -331,6 +334,7 @@ std::string toString(ip_addr_t val)
     {
     case IPADDR_TYPE_V4: return toString(val.u_addr.ip4);
     case IPADDR_TYPE_V6: return toString(val.u_addr.ip6);
+    default:;
     }
     //ESP_LOGW(TAG, "Unknown ipv%hhu", val.type);
     return fmt::format("Unknown ipv{}", val.type);
@@ -342,6 +346,7 @@ std::string toString(const esp_ip_addr_t &val)
     {
     case IPADDR_TYPE_V4: return toString(val.u_addr.ip4);
     case IPADDR_TYPE_V6: return toString(val.u_addr.ip6);
+    default:;
     }
     ESP_LOGW(TAG, "Unknown ipv%hhu", val.type);
     return fmt::format("Unknown ipv{}", val.type);
