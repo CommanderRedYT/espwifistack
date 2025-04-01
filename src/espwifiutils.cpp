@@ -4,12 +4,10 @@
 #include <cstdio>
 #include <bitset>
 #include <utility>
+#include <format>
 
 // esp-idf includes
 #include <esp_log.h>
-
-// 3rdparty lib includes
-#include <fmt/core.h>
 
 namespace wifi_stack {
 namespace {
@@ -72,7 +70,7 @@ std::string toString(wifi_auth_mode_t authMode)
     default:;
     }
     ESP_LOGW(TAG, "Unknown wifi_auth_mode_t(%i)", std::to_underlying(authMode));
-    return fmt::format("Unknown wifi_auth_mode_t({})", std::to_underlying(authMode));
+    return std::format("Unknown wifi_auth_mode_t({})", std::to_underlying(authMode));
 }
 
 std::string toString(wifi_cipher_type_t cipherType)
@@ -94,7 +92,7 @@ std::string toString(wifi_cipher_type_t cipherType)
     case WIFI_CIPHER_TYPE_UNKNOWN:     return "UNKNOWN";
     }
     ESP_LOGW(TAG, "Unknown wifi_cipher_type_t(%i)", std::to_underlying(cipherType));
-    return fmt::format("Unknown wifi_cipher_type_t({})", std::to_underlying(cipherType));
+    return std::format("Unknown wifi_cipher_type_t({})", std::to_underlying(cipherType));
 }
 
 std::string toString(wifi_bandwidth_t bandwidth)
@@ -106,7 +104,7 @@ std::string toString(wifi_bandwidth_t bandwidth)
     default:;
     }
     ESP_LOGW(TAG, "Unknown wifi_bandwidth_t(%i)", std::to_underlying(bandwidth));
-    return fmt::format("Unknown wifi_bandwidth_t({})", std::to_underlying(bandwidth));
+    return std::format("Unknown wifi_bandwidth_t({})", std::to_underlying(bandwidth));
 }
 
 std::string toString(esp_interface_t interface)
@@ -120,7 +118,7 @@ std::string toString(esp_interface_t interface)
     case ESP_IF_MAX:      return "MAX";
     }
     ESP_LOGW(TAG, "Unknown esp_interface_t(%i)", std::to_underlying(interface));
-    return fmt::format("Unknown esp_interface_t({})", std::to_underlying(interface));
+    return std::format("Unknown esp_interface_t({})", std::to_underlying(interface));
 }
 
 std::string toString(esp_netif_dhcp_status_t status)
@@ -133,7 +131,7 @@ std::string toString(esp_netif_dhcp_status_t status)
     case ESP_NETIF_DHCP_STATUS_MAX: return "STATUS_MAX";
     }
     ESP_LOGW(TAG, "Unknown esp_netif_dhcp_status_t(%i)", std::to_underlying(status));
-    return fmt::format("Unknown esp_netif_dhcp_status_t({})", std::to_underlying(status));
+    return std::format("Unknown esp_netif_dhcp_status_t({})", std::to_underlying(status));
 }
 
 const char * toString(wifi_err_reason_t reason)
@@ -229,12 +227,12 @@ template<> std::expected<mac_t, std::string> fromString<mac_t>(std::string_view 
                     &result[0], &result[1], &result[2], &result[3], &result[4], &result[5]) == 6)
         return result;
 
-    return std::unexpected(fmt::format("invalid format ({})", str));
+    return std::unexpected(std::format("invalid format ({})", str));
 }
 
 std::string toString(const mac_t &val)
 {
-    return fmt::format("{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}",
+    return std::format("{:02X}:{:02X}:{:02X}:{:02X}:{:02X}:{:02X}",
                        val.at(0), val.at(1), val.at(2), val.at(3), val.at(4), val.at(5));
 }
 
@@ -283,7 +281,7 @@ template<> std::expected<ip_address_t, std::string> fromString<ip_address_t>(std
 
 std::string toString(ip_address_t val)
 {
-    return fmt::format("{}.{}.{}.{}", val[0], val[1], val[2], val[3]);
+    return std::format("{}.{}.{}.{}", val[0], val[1], val[2], val[3]);
 }
 
 std::string toString(const std::optional<ip_address_t> &val)
@@ -337,7 +335,7 @@ std::string toString(ip_addr_t val)
     default:;
     }
     //ESP_LOGW(TAG, "Unknown ipv%hhu", val.type);
-    return fmt::format("Unknown ipv{}", val.type);
+    return std::format("Unknown ipv{}", val.type);
 }
 
 std::string toString(const esp_ip_addr_t &val)
@@ -349,7 +347,7 @@ std::string toString(const esp_ip_addr_t &val)
     default:;
     }
     ESP_LOGW(TAG, "Unknown ipv%hhu", val.type);
-    return fmt::format("Unknown ipv{}", val.type);
+    return std::format("Unknown ipv{}", val.type);
 }
 
 } // namespace wifi_stack

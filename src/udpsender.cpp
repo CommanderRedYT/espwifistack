@@ -2,15 +2,13 @@
 
 // system
 #include <utility>
+#include <format>
 
 // esp-idf includes
 #include <lwip/sockets.h>
 #include <lwip/netdb.h>
 #include <errno.h>
 #include <esp_log.h>
-
-// 3rdparty lib includes
-#include <fmt/core.h>
 
 // local includes
 #include "espwifistack.h"
@@ -42,7 +40,7 @@ std::expected<void, std::string> UdpSender::send(esp_interface_t interf, uint16_
 {
     const auto interfPtr = esp_netifs[interf];
     if (!interfPtr)
-        return std::unexpected(fmt::format("esp_netifs[{}] is invalid", std::to_underlying(interf)));
+        return std::unexpected(std::format("esp_netifs[{}] is invalid", std::to_underlying(interf)));
 
     return send(interfPtr, port, buf);
 }
@@ -54,7 +52,7 @@ std::expected<void, std::string> UdpSender::send(esp_netif_t *interf, uint16_t p
 
     esp_netif_ip_info_t ip;
     if (const auto result = esp_netif_get_ip_info(interf, &ip); result != ESP_OK)
-        return std::unexpected(fmt::format("esp_netif_get_ip_info() failed with {}", esp_err_to_name(result)));
+        return std::unexpected(std::format("esp_netif_get_ip_info() failed with {}", esp_err_to_name(result)));
 
     return send(ip, port, buf);
 }
@@ -77,9 +75,9 @@ std::expected<void, std::string> UdpSender::send(const struct sockaddr_in &recip
         return std::unexpected("initializing failed, not ready to send");
 
     if (const ssize_t sent = sendto(m_udp_server, buf.data(), buf.size(), 0, (const struct sockaddr*)&recipient, sizeof(recipient)); sent < 0)
-        return std::unexpected(fmt::format("send failed with {} (errno={})", sent, errno));
+        return std::unexpected(std::format("send failed with {} (errno={})", sent, errno));
     else if (sent != buf.size())
-        return std::unexpected(fmt::format("sent bytes does not match, expected={}, sent={}", buf.size(), sent));
+        return std::unexpected(std::format("sent bytes does not match, expected={}, sent={}", buf.size(), sent));
 
     return {};
 }
@@ -90,9 +88,9 @@ std::expected<void, std::string> UdpSender::send(const struct sockaddr_in6 &reci
         return std::unexpected("initializing failed, not ready to send");
 
     if (const ssize_t sent = sendto(m_udp_server, buf.data(), buf.size(), 0, (const struct sockaddr*)&recipient, sizeof(recipient)); sent < 0)
-        return std::unexpected(fmt::format("send failed with {} (errno={})", sent, errno));
+        return std::unexpected(std::format("send failed with {} (errno={})", sent, errno));
     else if (sent != buf.size())
-        return std::unexpected(fmt::format("sent bytes does not match, expected={}, sent={}", buf.size(), sent));
+        return std::unexpected(std::format("sent bytes does not match, expected={}, sent={}", buf.size(), sent));
 
     return {};
 }
@@ -122,7 +120,7 @@ std::expected<void, std::string> UdpSender::send(ip_addr_t ip, uint16_t port, st
         return send(recipient, buf);
     }
     }
-    return std::unexpected(fmt::format("unsupported ip type {}", ip.type));
+    return std::unexpected(std::format("unsupported ip type {}", ip.type));
 }
 
 std::expected<void, std::string> UdpSender::send(esp_ip_addr_t ip, uint16_t port, std::string_view buf)
@@ -150,7 +148,7 @@ std::expected<void, std::string> UdpSender::send(esp_ip_addr_t ip, uint16_t port
         return send(recipient, buf);
     }
     }
-    return std::unexpected(fmt::format("unsupported ip type {}", ip.type));
+    return std::unexpected(std::format("unsupported ip type {}", ip.type));
 }
 
 } // namespace wifi_stack
