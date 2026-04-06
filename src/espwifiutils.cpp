@@ -216,7 +216,7 @@ std::string toString(esp_netif_auth_type_t authType)
     }
 
     ESP_LOGW(TAG, "Unknown esp_netif_auth_type_t(%i)", std::to_underlying(authType));
-    return fmt::format("Unknown esp_netif_auth_type_t({})", std::to_underlying(authType));
+    return std::format("Unknown esp_netif_auth_type_t({})", std::to_underlying(authType));
 }
 #endif
 
